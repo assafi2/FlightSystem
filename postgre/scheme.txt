@@ -1,0 +1,96 @@
+create table Country(
+	
+	id serial primary key,
+	name text unique  
+) ;
+
+alter table country alter column name set not null;
+
+
+create table User_Role(
+	
+	id serial primary key,
+	role_name text NOT NULL unique   
+) ;
+
+create table Users(
+	
+	id bigserial primary key,
+	username text NOT NULL unique,
+	password text NOT NULL,
+	email text NOT NULL unique,
+	user_role int NOT NULL,
+	foreign key (user_role) references User_Role(id)   
+) ;
+
+
+create table Administrator(
+	
+	id serial primary key,
+	first_name text NOT NULL,
+	last_name text,
+	user_id bigint unique,
+	foreign key (user_id) references Users(id)   
+) ;
+
+
+
+
+create table Airline_Company(
+	
+	id bigserial primary key,
+	name text NOT NULL unique,
+	country_id int,
+	user_id bigint NOT NULL unique,
+	foreign key (country_id) references Country(id),
+	foreign key (user_id) references Users(id)   
+) ;
+
+
+
+ create table Flight(
+	
+	id bigserial primary key,
+	airline_company_id bigint NOT NULL,
+	origin_country_id int NOT NULL,
+	destination_country_id int NOT NULL,
+	departure_time timestamp NOT NULL,
+	landing_time timestamp NOT NULL,
+	remaining_tickets int NOT NULL,
+	foreign key (airline_company_id) references airline_company(id),
+	foreign key (origin_country_id) references Country(id),
+	foreign key (destination_country_id) references Country(id)
+) ;
+
+
+ALTER TABLE flight
+	ADD CONSTRAINT not_negative_remaining check(remaining_tickets > -1);
+
+
+
+create table Customer(
+	
+	id bigserial primary key,
+	first_name text NOT NULL,
+	last_name text NOT NULL,
+	address text,
+	phone_no text NOT NULL,
+	credit_card_no text NOT NULL,
+	user_id bigint NOT NULL,
+	foreign key (user_id) references Users(id)   
+) ;
+
+
+create table Ticket(
+	
+	id bigserial primary key,
+	flight_id bigint NOT NULL,
+	customer_id bigint NOT NULL, 
+	foreign key (flight_id) references Flight(id),
+	foreign key (customer_id) references Customer(id),	
+	unique (flight_id, customer_id)
+) ;
+
+
+
+

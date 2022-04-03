@@ -1,0 +1,52 @@
+------ sample update queries for basic testings ------
+
+INSERT INTO user_role(role_name)
+VALUES ('airline_company');
+
+--airline company insertion--
+
+INSERT INTO Users(username,password,email,user_role)
+VALUES ('elal','elal1','elal@yahoo.com',1);	
+
+
+INSERT INTO Country(name)
+VALUES ('israel');
+
+INSERT INTO airline_company(name,country_id,user_id)
+VALUES ('el-al',1,1);
+
+----
+
+INSERT INTO user_role(role_name)
+VALUES ('customer');
+
+
+--customer insertion--
+
+INSERT INTO Users(username,password,email,user_role)
+VALUES ('assafi1','assafi111','assafi1@gmail.com',2);	
+	
+INSERT INTO customer(first_name,last_name,address,phone_no,credit_card_no,user_id)
+VALUES ('assaf','cohen petel','ben gurion street, givat shmuel',
+		'0528306033','4580160133356789',2);
+
+----
+
+INSERT INTO flight(airline_company_id, origin_country_id, destination_country_id, 
+				   departure_time, landing_time, remaining_tickets)
+VALUES (1,1,1,'2022-04-28 01:00:00','2022-04-28 03:00:00',100);	
+	
+INSERT INTO flight(airline_company_id, origin_country_id, destination_country_id, 
+				   departure_time, landing_time, remaining_tickets)
+VALUES (1,1,1,'2022-03-25 23:50:00','2022-03-26 02:00:00',100);	
+	
+INSERT INTO flight(airline_company_id, origin_country_id, destination_country_id, 
+				   departure_time, landing_time, remaining_tickets)
+VALUES (1,1,1,'2022-03-26 01:10:00','2022-03-26 03:00:00',100);	
+	
+
+-- tickets -- 
+
+INSERT INTO ticket(flight_id, customer_id)
+VALUES (2,1);	
+	

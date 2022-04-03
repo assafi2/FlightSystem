@@ -1,0 +1,182 @@
+    
+create or replace function get_airline_by_username(_username text)
+returns bigint
+language plpgsql 
+AS
+$$
+
+	begin 
+		return		
+				(select airline_company.id 							
+			 	 from airline_company inner join users on airline_company.user_id = users.id 
+				 where users.username = _username) ;
+	end;
+
+$$
+
+
+create or replace function get_customer_by_username(_username text)
+returns bigint
+language plpgsql 
+AS
+$$
+
+	begin 
+		return		
+				(select customer.id 							
+			 	 from customer inner join users on customer.user_id = users.id 
+				 where users.username = _username) ;
+	end;
+
+$$
+
+create or replace function get_user_by_username(_username text)
+returns table(
+	id bigint ,
+	username text,
+	password text,
+	email text ,
+	user_role int
+)   -- could return a RECORD as well   
+language plpgsql 
+AS
+$$
+--	declare 
+--		ret RECORD ;  
+	begin 
+		return query 
+		select * -- into ret  							
+		from users
+		where users.username = _username ; 
+--		return ret ;   
+	end;
+
+$$
+
+-- date argument specify deprture date   
+
+create or replace function get_flights_by_parameters
+	(_origin_country_id int, _destination_country_id int,_date date)
+returns table
+   (id bigint,
+	airline_company_id bigint,
+	origin_country_id int,
+	destination_country_id int,
+	departure_time timestamp,
+	landing_time timestamp,
+	remaining_tickets int
+)  
+language plpgsql 
+AS
+$$
+  
+	begin 
+		return query 
+		select *  							
+		from flight
+		where flight.origin_country_id = _origin_country_id and 
+		flight.destination_country_id = _destination_country_id and 
+		flight.departure_time::date = _date;
+	end;
+
+$$
+
+
+create or replace function get_flights_by_airline_id(_airline_id bigint)
+returns table
+   (id bigint,
+	airline_company_id bigint,
+	origin_country_id int,
+	destination_country_id int,
+	departure_time timestamp,
+	landing_time timestamp,
+	remaining_tickets int
+)  
+language plpgsql 
+AS
+$$
+  
+	begin 
+		return query 
+		select *  							
+		from flight
+		where flight.airline_company_id = _airline_id;
+	end;
+
+$$
+
+
+create or replace function get_arrival_flights(_country_id int)
+returns table
+   (id bigint,
+	airline_company_id bigint,
+	origin_country_id int,
+	destination_country_id int,
+	departure_time timestamp,
+	landing_time timestamp,
+	remaining_tickets int
+)  
+language plpgsql 
+AS
+$$
+  
+	begin 
+		return query 
+		select *  							
+		from flight
+		where flight.destination_country_id = _country_id and 
+			(flight.landing_time - current_timestamp) < '12:00:00' and
+			flight.landing_time > current_timestamp ;
+	end;
+
+$$
+
+
+create or replace function get_departure_flights(_country_id int)
+returns table
+   (id bigint,
+	airline_company_id bigint,
+	origin_country_id int,
+	destination_country_id int,
+	departure_time timestamp,
+	landing_time timestamp,
+	remaining_tickets int
+)  
+language plpgsql 
+AS
+$$
+  
+	begin 
+		return query 
+		select *  							
+		from flight
+		where flight.origin_country_id = _country_id and 
+			(flight.departure_time - current_timestamp) < '12:00:00' and
+			flight.departure_time > current_timestamp ;
+	end;
+
+$$
+
+
+
+create or replace function get_tickets_by_customer(_customer_id bigint)
+returns table
+   (
+	id bigint,
+	flight_id bigint,
+	customer_id bigint
+	)  
+language plpgsql 
+AS
+$$
+  
+	begin 
+		return query 
+		select *  							
+		from ticket
+		where ticket.customer_id = _customer_id ;
+	end;
+
+$$
+
+
