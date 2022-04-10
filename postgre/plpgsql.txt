@@ -1,29 +1,45 @@
     
 create or replace function get_airline_by_username(_username text)
-returns bigint
+returns table(
+	id bigint,
+	name text,
+	country_id int,
+	user_id bigint
+)
 language plpgsql 
 AS
 $$
 
 	begin 
-		return		
-				(select airline_company.id 							
+		return query		
+				(select airline_company.id, airline_company.name,
+				 airline_company.country_id ,airline_company.user_id 							
 			 	 from airline_company inner join users on airline_company.user_id = users.id 
 				 where users.username = _username) ;
 	end;
 
 $$
 
-
 create or replace function get_customer_by_username(_username text)
-returns bigint
+returns table(
+	
+	id bigint,
+	first_name text,
+	last_name text,
+	address text,
+	phone_no text,
+	credit_card_no text,
+	user_id bigint 
+)
 language plpgsql 
 AS
 $$
 
 	begin 
-		return		
-				(select customer.id 							
+		return	query 	
+				(select customer.id, customer.first_name , customer.last_name,
+				 customer.address text, customer.phone_no,
+				 customer.credit_card_no, customer.user_id							
 			 	 from customer inner join users on customer.user_id = users.id 
 				 where users.username = _username) ;
 	end;
