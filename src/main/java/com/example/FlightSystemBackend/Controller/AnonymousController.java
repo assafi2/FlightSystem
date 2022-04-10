@@ -67,19 +67,6 @@ public class AnonymousController {
 
     // TODO get airlines by varying params
 
-    @GetMapping("/airlines/{id}")
-    public Airline_Company getAirlines(@PathVariable("id") int id) {
-        Airline_Company airline = facade.getAirlineById(id) ;
-        if (airline!=null) return airline ;
-        else throw new ResponseStatusException(HttpStatus.NOT_FOUND) ;
-    }
-    @GetMapping("/countries/{id}")
-    public Country getCountrys(@PathVariable("id") int id) {
-        Country country = facade.getCountryById(id) ;
-        if (country!=null) return country ;
-        else throw new ResponseStatusException(HttpStatus.NOT_FOUND) ;
-    }
-
 
     @PostMapping("/login/")
     public LoginToken addStudent(@RequestBody String userName, @RequestBody String password) {
