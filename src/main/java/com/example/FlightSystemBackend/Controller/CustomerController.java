@@ -70,6 +70,9 @@ public class CustomerController {
 
     @PostMapping("/login/")
     public LoginToken login(@RequestBody String username, @RequestBody String password) {
+        System.out.println(username + " --- " + password );
+
+        System.out.println(username + "    " + password);
         if ((username == null) || (password == null))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         return facade.login(username, password).getLoginToken();
@@ -103,6 +106,7 @@ public class CustomerController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         return facade.addTicket(loginToken, ticket);
     }
+
     @DeleteMapping("/tickets/")
     public boolean removeTicket(@RequestBody LoginToken loginToken, @RequestBody Ticket ticket) {
 
@@ -111,11 +115,9 @@ public class CustomerController {
         return facade.removeTicket(loginToken, ticket);
     }
 
-    // TODO DEBUG
 
-    @GetMapping("/tickets/")
-    public List<Ticket> getMyTickets(@RequestParam LoginToken loginToken) {
-
+    @PostMapping("/tickets/my/")
+    public List<Ticket> getMyTickets(@RequestBody LoginToken loginToken) {
         if (loginToken == null)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         return facade.getMyTickets(loginToken);
