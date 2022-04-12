@@ -4,10 +4,7 @@ package com.example.FlightSystemBackend.Controller;
 import com.example.FlightSystemBackend.BussinessServices.AirlineFacade;
 import com.example.FlightSystemBackend.BussinessServices.AnonymousFacade;
 import com.example.FlightSystemBackend.BussinessServices.LoginToken;
-import com.example.FlightSystemBackend.PersistantDomainObjects.Airline_Company;
-import com.example.FlightSystemBackend.PersistantDomainObjects.Country;
-import com.example.FlightSystemBackend.PersistantDomainObjects.Customer;
-import com.example.FlightSystemBackend.PersistantDomainObjects.Flight;
+import com.example.FlightSystemBackend.PersistantDomainObjects.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -16,7 +13,7 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
-@RequestMapping("airline")
+@RequestMapping("/airline")
 public class AirlineCompanyController {
 
 
@@ -89,6 +86,44 @@ public class AirlineCompanyController {
         return facade.addCustomer(customer) ;
     }
 
+    // Airline controller functionality
 
+
+
+    @PostMapping("/flights/my/")
+    public List<Flight> getMyTickets(@RequestBody LoginToken loginToken) {
+        if (loginToken == null)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        return facade.getMyFlights(loginToken);
+    }
+
+    @PutMapping("/")
+    public boolean updateAirline(LoginToken loginToken, Airline_Company airline) {
+        if ((airline == null) || (loginToken == null))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        return facade.updateAirline(loginToken, airline);
+    }
+
+    @PostMapping("/flights/")
+    public boolean addFlight(@RequestBody LoginToken loginToken, @RequestBody Flight flight) {
+        if (flight == null)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        return facade.addFlight(loginToken,flight);
+    }
+
+    @PutMapping("/flights/")
+    public boolean updateFlight(@RequestBody LoginToken loginToken, @RequestBody Flight flight) {
+        if (flight == null)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        return facade.updateFlight(loginToken,flight);
+    }
+
+
+
+    @DeleteMapping("/flights/")
+    public boolean removeFlight(@RequestBody LoginToken loginToken, Flight flight) {
+        if (flight == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+           return facade.removeFlight(loginToken,flight);
+    }
 
 }
