@@ -1,0 +1,2 @@
+All controllers better support delete mapping functionalities with path variables instead of request body pojo variables 
+Therefore relevant changes should be done in the facades  
