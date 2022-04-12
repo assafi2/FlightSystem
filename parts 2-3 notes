@@ -1,0 +1,3 @@
+Coldnt use (import) JUnit Assert class, therefore current value is printed in the test methods .   
+I'm not sure how to send two request body parameters in a POST request via Postman, therefore I couldnt check
+the relevant POST requests (with more than one request body parameters) appropriately . 
