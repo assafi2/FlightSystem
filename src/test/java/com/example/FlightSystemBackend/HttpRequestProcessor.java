@@ -1,13 +1,18 @@
 package com.example.FlightSystemBackend;
 
+import com.example.FlightSystemBackend.BussinessServices.AdministratorFacade;
+import com.example.FlightSystemBackend.Controller.AdministratorController;
 import com.example.FlightSystemBackend.Controller.CustomerController;
 import com.example.FlightSystemBackend.DAO.*;
 import com.example.FlightSystemBackend.PersistantDomainObjects.Administrator;
 import com.example.FlightSystemBackend.PersistantDomainObjects.Country;
+import com.fasterxml.jackson.databind.type.ArrayType;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.example.FlightSystemBackend.PersistantDomainObjects.Flight ;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -61,12 +66,12 @@ public class HttpRequestProcessor {
         }
     }
 
-    // curret implementation set to work with only 1 request body parameter,
+    // current implementation set to work with only 1 request body parameter,
     // should be modified to work with multiple request body parameters
     public <T> T processPOSTRequest(String uri, Class<T> clazz, List<Object> bodyParameters) {
 
-        Gson gson = gsonBuilder.create() ;
 
+        Gson gson = gsonBuilder.create() ;
 
         HttpRequest request = requestBuilder.uri(URI.create(uri))
                 .headers("Content-Type", "application/json")
@@ -84,11 +89,11 @@ public class HttpRequestProcessor {
             e.printStackTrace();
         }
 
-
         return gson.fromJson(response.body(),clazz);
 
     }
-
+    
+    // scratch tests / outputs  
 /*
     public static void main(String[] args) {
         var h = new HttpRequestProcessor() ;
@@ -110,9 +115,9 @@ public class HttpRequestProcessor {
         System.out.println(gson.toJson(addao.get(3))) ;
         List<Object> list =  new ArrayList<Object>() ;
         list.add(CustomerController.TEMP_TOKEN) ;
-
-        String jSonString = gson.toJson(list) ;
+        String jSonString   = gson.toJson(list) ;
         System.out.println(jSonString);
+        System.out.println(gson.toJson(AdministratorController.TEMP_TOKEN));
     }
 */
 }
