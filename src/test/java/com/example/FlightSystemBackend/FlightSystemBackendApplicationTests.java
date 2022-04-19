@@ -11,10 +11,8 @@ import com.example.FlightSystemBackend.PersistantDomainObjects.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.junit.Assert;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-//import org.springframework.util.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
