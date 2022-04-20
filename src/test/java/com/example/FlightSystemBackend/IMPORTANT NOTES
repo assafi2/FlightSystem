@@ -1,4 +1,4 @@
-Due to the requested implementation specifics, non anonynous facedes within the different corresponding controllers holds a CONSTANT token that will be used in 
+Due to the requested implementation specifics, non anonynous facades within the different corresponding controllers holds a CONSTANT token that will be used in 
 the test http requests . The token defined as final under the name TEMP_TOKEN within each corresponding controller class, 
 each TEMP_TOKEN fits the role of the correspoding controller/facade class . This is related to the server state .  
 
