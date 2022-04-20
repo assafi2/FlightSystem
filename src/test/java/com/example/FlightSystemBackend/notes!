@@ -1,1 +1,20 @@
-COULD NOT IMPORT NECESSARY ASSERT PACKAGE\CLASS THEREFORE DIDNT USE ASSERTIONS WITHIN TEST METHODS   
+Due to the requested implementation specifics, non anonynous facedes within the different corresponding controllers holds a CONSTANT token that will be used in 
+the test http requests . The token defined as final under the name TEMP_TOKEN within each corresponding controller class, 
+each TEMP_TOKEN fits the role of the correspoding controller/facade class . This is related to the server state .  
+
+
+
+AS MENTIONED IN THE COMMENTS WITHIN THE MAIN TEST CLASS, A DIFFICULT OCCURED IN COMPARING EXPECTED VALUES OF COLLECTIONS,
+WITH ACTUAL VALUES OF A COLLECTION EXTRACTED FROM AN HTTP RESPONSE JSON   
+The reason is that if you get a Class<T> object of an object from a class with parametrized type,
+the parametrized type will become raw in the T parameter of the Class<T> object.  . 
+example : new ArrayList<Flight>.getClass() results in a Class<ArrayList<>> object (Flight is a POJO class)
+Therefore, passing the Class<T> object obtained in a similar way to a Gson.fromJson(String json, Class<T> classOfT) method, will result in a collection object 
+that holds TreeMap objects !  for example arraylist of TreeMap objects . 
+Therfore equality between an expected List (or Arraylist as returned from facades methods) of POJOs could not be vaild against a similar actual value
+of Arraylist of TreeMap objects (which represent the POJO objects and created from thier JSONS strings recieved in the http response)  
+As a result, and until we'll find a better way to extract a java collection from the http response body, we printed the values instead of using assertions,
+in the relevant test logic .  
+
+
+
