@@ -7,19 +7,32 @@ import com.example.FlightSystemBackend.PersistantDomainObjects.Country;
 import com.example.FlightSystemBackend.PersistantDomainObjects.Customer;
 import com.example.FlightSystemBackend.PersistantDomainObjects.Flight;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 
 @RestController
-@RequestMapping("anonymous")
+@RequestMapping("/anonymous")
 public class AnonymousController {
 
+    Random rnd = new Random() ;
 
     private AnonymousFacade facade = new AnonymousFacade() ;
+
+
+    protected LoginToken generateToken(Authentication authen) {
+
+        String role = authen.getAuthorities()
+                .iterator().next()
+                .getAuthority().replace("ROLE_","") ;
+        return new LoginToken(rnd.nextInt(),authen.getName(),LoginToken.Role.valueOf(role.toUpperCase())) ;
+
+    }
 
     @GetMapping("/flights/")
     public List<Flight> getFlights() {
@@ -69,21 +82,23 @@ public class AnonymousController {
 
 
     @PostMapping("/login/")
-    public LoginToken addStudent(@RequestBody String userName, @RequestBody String password) {
-        if ((userName == null) || (password == null))
+    public LoginToken login(@RequestBody String username, @RequestBody String password) {
+        if ((username == null) || (password == null))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-        return facade.login(userName, password).getLoginToken();
+        System.out.println("hi");
+        return facade.login(username, password).getLoginToken();
     }
 
 
     @PostMapping("/signin/")
-    public boolean addStudent(@RequestBody Customer customer) {
+    public boolean addCustomer(@RequestBody Customer customer) {
         if (customer==null)
             throw  new ResponseStatusException(HttpStatus.BAD_REQUEST);
             // TODO create new user method within the FacadeBase class and to use it here
             //  with a user object from a requestbody arg
             return facade.addCustomer(customer) ;
     }
+
 
 
 
