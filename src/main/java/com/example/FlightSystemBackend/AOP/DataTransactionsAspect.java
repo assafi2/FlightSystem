@@ -1,18 +1,22 @@
 package com.example.FlightSystemBackend.AOP;
 
+import com.example.FlightSystemBackend.MongoDBRelies.DTO.AddOp;
+import com.example.FlightSystemBackend.MongoDBRelies.repository.AddOpsRepositoy;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Component
 @Aspect
 public class DataTransactionsAspect {
 
-    //TODO autowired mongo crud repository object for relevant document named "addRepo"
 
+    @Autowired
+    AddOpsRepositoy addOpsRepo ;
 
     // document DAO add operations within the system (as well as add operations via JPA) , in a MongoDB document
 
@@ -20,8 +24,8 @@ public class DataTransactionsAspect {
     // in case it possible add another execution path for JPA data access,
     // otherwise TODO implement a second relevant @before method
     public void allAddMethodsDBUpdate(){
-        LocalDateTime currentStamp = LocalDateTime.now() ;
-        // TODO create new mongo document DTO object based on curerntStamp value
-        // TODO add record to MongoDB with addRepo API's add operation .
+
+        int nextId = (int)addOpsRepo.count();  // simulated auto increment mechanism
+        addOpsRepo.insert(new AddOp(nextId,LocalDateTime.now())) ;
     }
 }
